@@ -1,9 +1,11 @@
 # syntax=docker/dockerfile:1
-FROM ruby:2.5
-RUN apt-get update -qq && apt-get install -y nodejs postgresql-client
+FROM ruby:3.1.2-buster 
+RUN apt-get update -qq && apt-get install -y nodejs postgresql-client && \
+    bundle config set force_ruby_platform true
 WORKDIR /myapp
 COPY Gemfile /myapp/Gemfile
 COPY Gemfile.lock /myapp/Gemfile.lock
+RUN bundle update
 RUN bundle install
 
 # コンテナー起動時に毎回実行されるスクリプトを追加
